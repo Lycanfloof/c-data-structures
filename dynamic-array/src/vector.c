@@ -27,6 +27,24 @@ char _check_capacity(vector vector)
     return 1;
 }
 
+void _shift_and_place(vector vector, size_t index)
+{
+    char *arr_start = vector->array;
+    size_t arr_index = arr_start + (index * vector->element_size);
+    size_t arr_end = arr_start + (vector->size * vector->element_size);
+
+    if (arr_index < arr_start || arr_index >= arr_end)
+        return;
+    else
+    {
+        while (arr_end > arr_index)
+        {
+            memcpy(arr_end, arr_end - vector->element_size, vector->element_size);
+            arr_end -= vector->element_size;
+        }
+    }
+}
+
 vector vector_create(size_t element_size)
 {
     vector new_vector = calloc(1, sizeof(vector));
@@ -70,11 +88,9 @@ void vector_set(vector vector, size_t index, void *element)
     if (index < 0 || index > vector->size - 1)
         return;
     else
-    {
         memcpy(((char *)vector->array) + index * vector->element_size,
                element,
                vector->element_size);
-    }
 }
 
 void vector_add(vector vector, void *element)
@@ -83,9 +99,28 @@ void vector_add(vector vector, void *element)
 
     if (!able_to_add)
         return;
+    else
+    {
+        memcpy(((char *)vector->array) + (vector->size) * vector->element_size,
+               element,
+               vector->element_size);
+        vector->size++;
+    }
+}
 
-    memcpy(((char *)vector->array) + (vector->size) * vector->element_size,
-           element,
-           vector->element_size);
-    vector->size++;
+void vector_add_at(vector vector, size_t index, void *element)
+{
+    char able_to_add = _check_capacity(vector);
+
+    if (!able_to_add)
+        return;
+    else
+    {
+        _shift_and_place(vector, index);
+
+        memcpy(((char *)vector->array) + index * vector->element_size,
+               element,
+               vector->element_size);
+        vector->size++;
+    }
 }
