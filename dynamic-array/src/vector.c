@@ -1,10 +1,10 @@
-#include "../include/vector.h"
-
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
-char _check_required_capacity(vector vector, size_t size)
+#include "../include/vector.h"
+
+char _check_required_capacity(vector *vector, size_t size)
 {
     if (size >= vector->capacity)
     {
@@ -27,15 +27,15 @@ char _check_required_capacity(vector vector, size_t size)
     return 1;
 }
 
-void _shift_elements(vector vector, size_t index, size_t positions)
+void _shift_elements(vector *vector, size_t index, size_t positions)
 {
-    if (index < 0 || index >= vector->size)
+    if (index >= vector->size)
         return;
     else
     {
         char *array = vector->array;
-        size_t arr_index = array + (index * vector->element_size);
-        size_t arr_end = array + ((vector->size + positions - 1) * vector->element_size);
+        char *arr_index = array + (index * vector->element_size);
+        char *arr_end = array + ((vector->size + positions - 1) * vector->element_size);
         while (arr_end > arr_index + positions - 1)
         {
             memcpy(arr_end, arr_end - vector->element_size * positions, vector->element_size);
@@ -44,9 +44,9 @@ void _shift_elements(vector vector, size_t index, size_t positions)
     }
 }
 
-vector vector_create(size_t element_size)
+vector *vector_create(size_t element_size)
 {
-    vector new_vector = calloc(1, sizeof(vector));
+    vector *new_vector = calloc(1, sizeof(vector));
 
     if (new_vector != NULL)
     {
@@ -65,26 +65,28 @@ vector vector_create(size_t element_size)
     return new_vector;
 }
 
-void vector_destroy(vector vector)
+vector *vector_destroy(vector *vector)
 {
     free(vector->array);
     vector->array = NULL;
 
     free(vector);
     vector = NULL;
+
+    return vector;
 }
 
-void *vector_get(vector vector, size_t index)
+void *vector_get(vector *vector, size_t index)
 {
-    if (index < 0 || index > vector->size - 1)
+    if (index > vector->size - 1)
         return NULL;
     else
         return (((char *)vector->array) + index * vector->element_size);
 }
 
-void vector_set(vector vector, size_t index, void *element, size_t element_size)
+void vector_set(vector *vector, size_t index, void *element, size_t element_size)
 {
-    if (index < 0 || index > vector->size - 1 || element_size != vector->element_size)
+    if (index > vector->size - 1 || element_size != vector->element_size)
         return;
     else
         memcpy(((char *)vector->array) + index * vector->element_size,
@@ -92,7 +94,7 @@ void vector_set(vector vector, size_t index, void *element, size_t element_size)
                vector->element_size);
 }
 
-void vector_add(vector vector, void *element, size_t element_size)
+void vector_add(vector *vector, void *element, size_t element_size)
 {
     if (element_size != vector->element_size)
         return;
@@ -112,7 +114,7 @@ void vector_add(vector vector, void *element, size_t element_size)
     }
 }
 
-void vector_add_at(vector vector, size_t index, void *element, size_t element_size)
+void vector_add_at(vector *vector, size_t index, void *element, size_t element_size)
 {
     if (element_size != vector->element_size)
         return;
@@ -134,7 +136,7 @@ void vector_add_at(vector vector, size_t index, void *element, size_t element_si
     }
 }
 
-void vector_add_vector(vector destination, vector source)
+void vector_add_vector(vector *destination, vector *source)
 {
     if (destination->element_size != source->element_size)
         return;
