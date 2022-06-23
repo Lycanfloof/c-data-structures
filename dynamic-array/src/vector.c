@@ -27,19 +27,18 @@ char _check_required_capacity(vector vector, size_t size)
     return 1;
 }
 
-void _shift_elements(vector vector, size_t index)
+void _shift_elements(vector vector, size_t index, size_t positions)
 {
-    char *arr_start = vector->array;
-    size_t arr_index = arr_start + (index * vector->element_size);
-    size_t arr_end = arr_start + (vector->size * vector->element_size);
-
-    if (arr_index < arr_start || arr_index >= arr_end)
+    if (index < 0 || index >= vector->size)
         return;
     else
     {
-        while (arr_end > arr_index)
+        char *array = vector->array;
+        size_t arr_index = array + (index * vector->element_size);
+        size_t arr_end = array + ((vector->size + positions - 1) * vector->element_size);
+        while (arr_end > arr_index + positions - 1)
         {
-            memcpy(arr_end, arr_end - vector->element_size, vector->element_size);
+            memcpy(arr_end, arr_end - vector->element_size * positions, vector->element_size);
             arr_end -= vector->element_size;
         }
     }
@@ -125,7 +124,7 @@ void vector_add_at(vector vector, size_t index, void *element, size_t element_si
             return;
         else
         {
-            _shift_elements(vector, index);
+            _shift_elements(vector, index, 1);
 
             memcpy(((char *)vector->array) + index * vector->element_size,
                    element,
