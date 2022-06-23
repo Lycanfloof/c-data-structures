@@ -18,8 +18,8 @@ void vector_destroy(vector);
 void *vector_get(vector, size_t);
 void vector_set(vector, size_t, void *);
 
-void vector_add(vector, void *);
-void vector_add_at(vector, size_t, void *);
+void vector_add(vector, void *, size_t);
+void vector_add_at(vector, size_t, void *, size_t);
 
 void vector_add_vector(vector, vector);
 void vector_add_vector_at(vector, size_t, vector);

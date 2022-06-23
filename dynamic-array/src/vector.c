@@ -4,12 +4,12 @@
 #include <string.h>
 #include <math.h>
 
-char _check_capacity(vector vector)
+char _check_required_capacity(vector vector, size_t size)
 {
-    if (vector->size >= vector->capacity)
+    if (size >= vector->capacity)
     {
-        size_t added_capacity = vector->size >= 4 ? log2(vector->size) : 1;
-        size_t new_capacity = vector->size + added_capacity;
+        size_t extra_capacity = size >= 4 ? log2(size) : 1;
+        size_t new_capacity = size + extra_capacity;
 
         void *tmp = realloc(vector->array, new_capacity * vector->element_size);
 
@@ -27,7 +27,7 @@ char _check_capacity(vector vector)
     return 1;
 }
 
-void _shift_and_place(vector vector, size_t index)
+void _shift_elements(vector vector, size_t index)
 {
     char *arr_start = vector->array;
     size_t arr_index = arr_start + (index * vector->element_size);
@@ -83,9 +83,9 @@ void *vector_get(vector vector, size_t index)
         return (((char *)vector->array) + index * vector->element_size);
 }
 
-void vector_set(vector vector, size_t index, void *element)
+void vector_set(vector vector, size_t index, void *element, size_t element_size)
 {
-    if (index < 0 || index > vector->size - 1)
+    if (index < 0 || index > vector->size - 1 || element_size != vector->element_size)
         return;
     else
         memcpy(((char *)vector->array) + index * vector->element_size,
@@ -93,34 +93,64 @@ void vector_set(vector vector, size_t index, void *element)
                vector->element_size);
 }
 
-void vector_add(vector vector, void *element)
+void vector_add(vector vector, void *element, size_t element_size)
 {
-    char able_to_add = _check_capacity(vector);
-
-    if (!able_to_add)
+    if (element_size != vector->element_size)
         return;
     else
     {
-        memcpy(((char *)vector->array) + (vector->size) * vector->element_size,
-               element,
-               vector->element_size);
-        vector->size++;
+        char able_to_add = _check_required_capacity(vector, vector->size);
+
+        if (!able_to_add)
+            return;
+        else
+        {
+            memcpy(((char *)vector->array) + vector->size * vector->element_size,
+                   element,
+                   vector->element_size);
+            vector->size++;
+        }
     }
 }
 
-void vector_add_at(vector vector, size_t index, void *element)
+void vector_add_at(vector vector, size_t index, void *element, size_t element_size)
 {
-    char able_to_add = _check_capacity(vector);
-
-    if (!able_to_add)
+    if (element_size != vector->element_size)
         return;
     else
     {
-        _shift_and_place(vector, index);
+        char able_to_add = _check_required_capacity(vector, vector->size);
 
-        memcpy(((char *)vector->array) + index * vector->element_size,
-               element,
-               vector->element_size);
-        vector->size++;
+        if (!able_to_add)
+            return;
+        else
+        {
+            _shift_elements(vector, index);
+
+            memcpy(((char *)vector->array) + index * vector->element_size,
+                   element,
+                   vector->element_size);
+            vector->size++;
+        }
+    }
+}
+
+void vector_add_vector(vector destination, vector source)
+{
+    if (destination->element_size != source->element_size)
+        return;
+    else
+    {
+        char able_to_add = _check_required_capacity(destination, destination->size + source->size);
+
+        if (!able_to_add)
+            return;
+        else
+        {
+            memcpy(((char *)destination->array) + destination->size * destination->element_size,
+                   source->array,
+                   source->element_size * source->size);
+            destination->size = destination->size + source->size;
+        }
     }
 }
