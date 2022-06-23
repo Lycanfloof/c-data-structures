@@ -103,14 +103,62 @@ void vector_add_vector(vector *, vector *);
  */
 void vector_add_vector_at(vector *, size_t, vector *);
 
-void vector_sort(vector *, char (*comp)(void *, void *));
+/*
+ * Sorts the given vector using Quick Sort and a comparator.
+ *
+ * Arguments:
+ *  vector -> The vector to be sorted.
+ *  comp -> The operation used to make comparations between elements.
+ */
+void vector_sort(vector *, char (*)(void *, void *));
 
+/*
+ * Removes the first instance of the given element in the array.
+ * The given element has to be the same size as the vector's element size.
+ *
+ * Arguments:
+ *  vector -> The vector in which the element is to be removed.
+ *  element -> The element to be removed.
+ */
 void vector_remove(vector *, void *);
+
+/*
+ * Removes an element at the specified position in the array.
+ *
+ * Arguments:
+ *  vector -> The vector in which the element is to be removed.
+ *  index -> The position of the element to be removed.
+ */
 void vector_remove_at(vector *, size_t);
 
+/*
+ * Returns 1 if the given vector contains no elements, otherwise it returns 0.
+ *
+ * Arguments:
+ *  vector -> The given vector.
+ *
+ * Returns:
+ *  1 if the given vector contains no elements, otherwise it returns 0.
+ */
 char vector_is_empty(vector *);
+
+/*
+ * Returns the number of elements stored in the given vector.
+ *
+ * Arguments:
+ *  vector -> The given vector.
+ *
+ * Returns:
+ *  The number of elements stored in the vector.
+ */
 size_t vector_size(vector *);
 
+/*
+ * Removes all the stored elements in the given vector.
+ *
+ * Arguments:
+ *  vector -> The given vector.
+ */
 void vector_clear(vector *);
 
 #endif // VECTOR_H
