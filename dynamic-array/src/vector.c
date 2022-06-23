@@ -4,13 +4,27 @@
 #include <string.h>
 #include <math.h>
 
-void _check_capacity(vector vector)
+char _check_capacity(vector vector)
 {
     if (vector->size >= vector->capacity)
     {
-        vector->capacity = vector->size + log2(vector->size);
-        vector->array = realloc(vector->array, vector->capacity * vector->element_size);
+        size_t added_capacity = vector->size >= 4 ? log2(vector->size) : 1;
+        size_t new_capacity = vector->size + added_capacity;
+
+        void *tmp = realloc(vector->array, new_capacity * vector->element_size);
+
+        if (tmp == NULL)
+        {
+            return 0;
+        }
+        else
+        {
+            vector->array = tmp;
+            vector->capacity = new_capacity;
+        }
     }
+
+    return 1;
 }
 
 vector vector_create(size_t element_size)
@@ -30,6 +44,7 @@ vector vector_create(size_t element_size)
             new_vector = NULL;
         }
     }
+
     return new_vector;
 }
 
@@ -64,7 +79,10 @@ void vector_set(vector vector, size_t index, void *element)
 
 void vector_add(vector vector, void *element)
 {
-    _check_capacity(vector);
+    char able_to_add = _check_capacity(vector);
+
+    if (!able_to_add)
+        return;
 
     memcpy(((char *)vector->array) + (vector->size) * vector->element_size,
            element,
