@@ -71,12 +71,78 @@ char add_test() // Implemented.
     }
 }
 
-char add_at_test()
+char add_at_test() // Implemented.
 {
+    vector *v = vector_create(sizeof(long long));
+    if (v != NULL)
+    {
+        long long long1 = 1;
+        long long long2 = 2;
+        long long long3 = 3;
+        long long long4 = 4;
+        int intg = 5;
+
+        // [1, 4, 2, 3]
+        vector_add_at(v, 0, &long2, sizeof(long2));
+        vector_add_at(v, 0, &long1, sizeof(long1));
+        vector_add_at(v, 2, &long3, sizeof(long3));
+        vector_add_at(v, 1, &long4, sizeof(long4));
+        vector_add_at(v, 0, &intg, sizeof(intg));
+
+        long long value1 = *((long long *)vector_get(v, 0));
+        long long value2 = *((long long *)vector_get(v, 1));
+        long long value3 = *((long long *)vector_get(v, 2));
+        long long value4 = *((long long *)vector_get(v, 3));
+
+        v = vector_destroy(v);
+
+        return value1 == long1 && value2 == long4 && value3 == long2 && value4 == long3;
+    }
+    else
+    {
+        printf("Memory allocation couldn't be done.");
+        return 0;
+    }
 }
 
-char add_vector_test()
+char add_vector_test() // Implemented.
 {
+    vector *v = vector_create(sizeof(long long));
+    vector *e = vector_create(sizeof(long long));
+    vector *c = vector_create(sizeof(int));
+    if (v != NULL && e != NULL)
+    {
+        long long long1 = 1;
+        long long long2 = 2;
+        long long long3 = 3;
+        long long long4 = 4;
+        int intg = 5;
+
+        vector_add(v, &long1, sizeof(long1));
+        vector_add(v, &long2, sizeof(long2));
+        vector_add(e, &long3, sizeof(long3));
+        vector_add(e, &long4, sizeof(long4));
+        vector_add(c, &intg, sizeof(intg));
+
+        vector_add_vector(v, c);
+        vector_add_vector(v, e);
+
+        long long value1 = *((long long *)vector_get(v, 0));
+        long long value2 = *((long long *)vector_get(v, 1));
+        long long value3 = *((long long *)vector_get(v, 2));
+        long long value4 = *((long long *)vector_get(v, 3));
+
+        v = vector_destroy(v);
+        e = vector_destroy(e);
+        c = vector_destroy(c);
+
+        return value1 == long1 && value2 == long2 && value3 == long3 && value4 == long4;
+    }
+    else
+    {
+        printf("Memory allocation couldn't be done.");
+        return 0;
+    }
 }
 
 char add_vector_at_test()
@@ -180,6 +246,8 @@ int main(void)
     char *s3 = assert(add_test());
     char *s4 = assert(get_test());
     char *s5 = assert(set_test());
+    char *s6 = assert(add_at_test());
+    char *s7 = assert(add_vector_test());
 
-    printf("%s\n%s\n%s\n%s\n%s\n", s1, s2, s3, s4, s5);
+    printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n", s1, s2, s3, s4, s5, s6, s7);
 }
