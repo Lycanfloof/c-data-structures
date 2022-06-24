@@ -200,6 +200,7 @@ void vector_sort(vector *, char (*)(void *, void *));
 void vector_remove(vector *vector, void *element)
 {
     char *array = vector->array;
+    char *elem = (char *)element;
 
     for (size_t i = 0; i < vector->size; i++)
     {
@@ -207,7 +208,7 @@ void vector_remove(vector *vector, void *element)
 
         for (size_t j = 0; j < vector->element_size; j++)
         {
-            if ((array + i * vector->element_size + j) != (char *)element + j)
+            if (*(array + i * vector->element_size + j) != *(elem + j))
             {
                 is_equal = 0;
                 break;
@@ -216,7 +217,7 @@ void vector_remove(vector *vector, void *element)
 
         if (is_equal)
         {
-            vector_remove_at(vector, i);
+            // vector_remove_at(vector, i);
             break;
         }
     }

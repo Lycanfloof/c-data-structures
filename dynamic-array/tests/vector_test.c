@@ -272,10 +272,63 @@ char sort_test()
 
 char remove_test()
 {
+    vector *v = vector_create(sizeof(long long));
+
+    if (v != NULL)
+    {
+        long long longl1 = 621;
+        long long longl2 = 926;
+
+        vector_add(v, &longl1, sizeof(longl1));
+        vector_add(v, &longl2, sizeof(longl2));
+        vector_add(v, &longl1, sizeof(longl1));
+
+        vector_remove(v, &longl2);
+
+        long long value1 = *((long long *)vector_get(v, 0));
+        long long value2 = *((long long *)vector_get(v, 1));
+        long long value3 = *((long long *)vector_get(v, 2));
+
+        printf("%d %d %d", value1, value2, value3);
+
+        v = vector_destroy(v);
+
+        return value1 == longl1 && value2 == longl1;
+    }
+    else
+    {
+        printf("Memory allocation couldn't be done.");
+        return 0;
+    }
 }
 
 char remove_at_test()
 {
+    vector *v = vector_create(sizeof(long long));
+
+    if (v != NULL)
+    {
+        long long longl1 = 621;
+        long long longl2 = 926;
+
+        vector_add(v, &longl1, sizeof(longl1));
+        vector_add(v, &longl2, sizeof(longl2));
+        vector_add(v, &longl1, sizeof(longl1));
+
+        vector_remove_at(v, 1);
+
+        long long value1 = *((long long *)vector_get(v, 0));
+        long long value2 = *((long long *)vector_get(v, 1));
+
+        v = vector_destroy(v);
+
+        return value1 == longl1 && value2 == longl1;
+    }
+    else
+    {
+        printf("Memory allocation couldn't be done.");
+        return 0;
+    }
 }
 
 char clear_test()
@@ -322,6 +375,8 @@ int main(void)
     char *s7 = assert(add_vector_test());
     char *s8 = assert(add_vector_at_test());
     char *s9 = assert(clear_test());
+    char *s10 = assert(remove_test());
+    char *s11 = assert(remove_at_test());
 
-    printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s", s1, s2, s3, s4, s5, s6, s7, s8, s9);
+    printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s", s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11);
 }
