@@ -5,10 +5,11 @@
 
 char _check_required_capacity(vector *vector, size_t size)
 {
-    if (size >= vector->capacity)
+    size_t required_capacity = size + DEFAULT_CAPACITY - (size % DEFAULT_CAPACITY);
+
+    if (vector->capacity != required_capacity)
     {
-        size_t new_capacity = size + DEFAULT_CAPACITY - (size % DEFAULT_CAPACITY);
-        void *tmp = realloc(vector->array, new_capacity * vector->element_size);
+        void *tmp = realloc(vector->array, required_capacity * vector->element_size);
 
         if (tmp == NULL)
         {
@@ -17,7 +18,7 @@ char _check_required_capacity(vector *vector, size_t size)
         else
         {
             vector->array = tmp;
-            vector->capacity = new_capacity;
+            vector->capacity = required_capacity;
         }
     }
 
@@ -116,7 +117,7 @@ void vector_add(vector *vector, void *element, size_t element_size)
         return;
     else
     {
-        char able_to_add = _check_required_capacity(vector, vector->size);
+        char able_to_add = _check_required_capacity(vector, vector->size + 1);
 
         if (!able_to_add)
             return;
@@ -136,7 +137,7 @@ void vector_add_at(vector *vector, size_t index, void *element, size_t element_s
         return;
     else
     {
-        char able_to_add = _check_required_capacity(vector, vector->size);
+        char able_to_add = _check_required_capacity(vector, vector->size + 1);
 
         if (!able_to_add)
             return;
