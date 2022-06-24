@@ -304,6 +304,7 @@ int main(void)
     char *s5 = assert(set_test());
     char *s6 = assert(add_at_test());
     char *s7 = assert(add_vector_test());
+    char *s8 = assert(add_vector_at_test());
 
     printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n", s1, s2, s3, s4, s5, s6, s7);
 }

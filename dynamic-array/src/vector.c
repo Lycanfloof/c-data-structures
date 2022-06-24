@@ -36,7 +36,7 @@ void _shift_elements(vector *vector, size_t index, size_t positions)
         char *array = vector->array;
         char *arr_index = array + (index * vector->element_size);
         char *arr_end = array + ((vector->size + positions - 1) * vector->element_size);
-        while (arr_end > arr_index + positions - 1)
+        while (arr_end > arr_index + (positions - 1) * vector->element_size)
         {
             memcpy(arr_end, arr_end - vector->element_size * positions, vector->element_size);
             arr_end -= vector->element_size;
