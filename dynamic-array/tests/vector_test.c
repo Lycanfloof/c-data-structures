@@ -74,6 +74,7 @@ char add_test() // Implemented.
 char add_at_test() // Implemented.
 {
     vector *v = vector_create(sizeof(long long));
+
     if (v != NULL)
     {
         long long long1 = 1;
@@ -110,7 +111,8 @@ char add_vector_test() // Implemented.
     vector *v = vector_create(sizeof(long long));
     vector *e = vector_create(sizeof(long long));
     vector *c = vector_create(sizeof(int));
-    if (v != NULL && e != NULL)
+
+    if (v != NULL && e != NULL && c != NULL)
     {
         long long long1 = 1;
         long long long2 = 2;
@@ -120,8 +122,10 @@ char add_vector_test() // Implemented.
 
         vector_add(v, &long1, sizeof(long1));
         vector_add(v, &long2, sizeof(long2));
+
         vector_add(e, &long3, sizeof(long3));
         vector_add(e, &long4, sizeof(long4));
+
         vector_add(c, &intg, sizeof(intg));
 
         vector_add_vector(v, c);
@@ -145,8 +149,60 @@ char add_vector_test() // Implemented.
     }
 }
 
-char add_vector_at_test()
+char add_vector_at_test() // Implemented.
 {
+    vector *v = vector_create(sizeof(long long));
+    vector *e = vector_create(sizeof(long long));
+    vector *c = vector_create(sizeof(int));
+
+    if (v != NULL && e != NULL && c != NULL)
+    {
+        long long long1 = 1;
+        long long long2 = 2;
+        long long long3 = 3;
+        long long long4 = 4;
+        int intg = 5;
+
+        vector_add(v, &long1, sizeof(long1));
+        vector_add(v, &long2, sizeof(long2));
+        vector_add(v, &long3, sizeof(long3));
+        vector_add(v, &long4, sizeof(long4));
+
+        vector_add(e, &long1, sizeof(long1));
+        vector_add(e, &long2, sizeof(long2));
+
+        vector_add(c, &intg, sizeof(intg));
+        vector_add(c, &intg, sizeof(intg));
+
+        // [1, 1, 2, 2, 3, 4]
+        vector_add_vector_at(v, 1, c);
+        vector_add_vector_at(v, 1, e);
+
+        long long value1 = *((long long *)vector_get(v, 0));
+        long long value2 = *((long long *)vector_get(v, 1));
+        long long value3 = *((long long *)vector_get(v, 2));
+        long long value4 = *((long long *)vector_get(v, 3));
+        long long value5 = *((long long *)vector_get(v, 4));
+        long long value6 = *((long long *)vector_get(v, 5));
+
+        v = vector_destroy(v);
+        e = vector_destroy(e);
+        c = vector_destroy(c);
+
+        char r1 = value1 == long1;
+        char r2 = value2 == long1;
+        char r3 = value3 == long2;
+        char r4 = value4 == long2;
+        char r5 = value5 == long3;
+        char r6 = value6 == long4;
+
+        return r1 && r2 && r3 && r4 && r5 && r6;
+    }
+    else
+    {
+        printf("Memory allocation couldn't be done.");
+        return 0;
+    }
 }
 
 char get_test() // Implemented.

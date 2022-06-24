@@ -155,3 +155,24 @@ void vector_add_vector(vector *destination, vector *source)
         }
     }
 }
+
+void vector_add_vector_at(vector *destination, size_t index, vector *source)
+{
+    if (source->element_size != destination->element_size)
+        return;
+    else
+    {
+        char able_to_add = _check_required_capacity(destination, destination->size + source->size);
+
+        if (!able_to_add)
+            return;
+        else
+        {
+            _shift_elements(destination, index, source->size);
+            memcpy(((char *)destination->array) + index * destination->element_size,
+                   source->array,
+                   source->element_size * source->size);
+            destination->size = destination->size + source->size;
+        }
+    }
+}
