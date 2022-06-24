@@ -198,9 +198,15 @@ void vector_add_vector_at(vector *destination, size_t index, vector *source)
 void vector_sort(vector *, char (*)(void *, void *));
 
 void vector_remove(vector *, void *);
-
-void vector_remove_at(vector *, size_t);
 */
+void vector_remove_at(vector *vector, size_t index)
+{
+    _left_shift(vector, index, 1);
+    vector->size--;
+
+    _check_required_capacity(vector, vector->size);
+}
+
 void vector_clear(vector *vector)
 {
     void *tmp = realloc(vector->array, 2 * vector->element_size);
