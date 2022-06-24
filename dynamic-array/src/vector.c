@@ -217,7 +217,7 @@ void vector_remove(vector *vector, void *element)
 
         if (is_equal)
         {
-            // vector_remove_at(vector, i);
+            vector_remove_at(vector, i);
             break;
         }
     }

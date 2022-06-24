@@ -287,9 +287,6 @@ char remove_test()
 
         long long value1 = *((long long *)vector_get(v, 0));
         long long value2 = *((long long *)vector_get(v, 1));
-        long long value3 = *((long long *)vector_get(v, 2));
-
-        printf("%d %d %d", value1, value2, value3);
 
         v = vector_destroy(v);
 
