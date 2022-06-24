@@ -3,6 +3,8 @@
 
 #include <stddef.h>
 
+#define DEFAULT_CAPACITY 8
+
 typedef struct vector
 {
     void *array;
@@ -13,7 +15,7 @@ typedef struct vector
 } vector;
 
 /*
- * Creates a new vector with an initial capacity of 2.
+ * Creates a new vector with an initial capacity of 8.
 
  * Arguments:
  *  element_size -> The size in bytes of the elements to be stored in the array.
@@ -60,8 +62,9 @@ void *vector_get(vector *, size_t);
 void vector_set(vector *, size_t, void *, size_t);
 
 /*
- * Appends the given element to the end of the array.
+ * Appends the given element to the end of the array, modifying its capacity if necessary.
  * The given element has to be the same size as the vector's element size.
+ * The capacity is increased by a factor of 8 when it is needed.
  *
  * Arguments:
  *  vector -> The vector in which the element is to be added.
@@ -71,8 +74,9 @@ void vector_set(vector *, size_t, void *, size_t);
 void vector_add(vector *, void *, size_t);
 
 /*
- * Appends the given element to the specified position in the array.
+ * Appends the given element to the specified position in the array, modifying its capacity if necessary.
  * The given element has to be the same size as the vector's element size.
+ * The capacity is increased by a factor of 8 when it is needed.
  *
  * Arguments:
  *  vector -> The vector in which the element is to be added.
@@ -83,8 +87,9 @@ void vector_add(vector *, void *, size_t);
 void vector_add_at(vector *, size_t, void *, size_t);
 
 /*
- * Appends the elements of the given vector to the end of the array.
+ * Appends the elements of the given vector to the end of the array, modifying its capacity if necessary.
  * The given vector has to have the same element size as the other one.
+ * The capacity is increased by a factor of 8 when it is needed.
  *
  * Arguments:
  *  destination -> The vector that'll receive the elements.
@@ -93,8 +98,9 @@ void vector_add_at(vector *, size_t, void *, size_t);
 void vector_add_vector(vector *, vector *);
 
 /*
- * Appends the elements of the given vector to the specified position in the array.
+ * Appends the elements of the given vector to the specified position in the array, modifying its capacity if necessary.
  * The given vector has to have the same element size as the other one.
+ * The capacity is increased by a factor of 8 when it is needed.
  *
  * Arguments:
  *  destination -> The vector that'll receive the elements.
@@ -132,7 +138,7 @@ void vector_remove(vector *, void *);
 void vector_remove_at(vector *, size_t);
 
 /*
- * Removes all the stored elements in the given vector and sets its capacity at 2.
+ * Removes all the stored elements in the given vector and sets its capacity to 8.
  *
  * Arguments:
  *  vector -> The given vector.

@@ -10,7 +10,7 @@ char create_test() // Implemented.
     if (v != NULL)
     {
         char r1 = v->array != NULL;
-        char r2 = v->capacity == 2;
+        char r2 = v->capacity == DEFAULT_CAPACITY;
         char r3 = v->element_size == sizeof(long long);
         char r4 = v->size == 0;
 
@@ -293,7 +293,7 @@ char clear_test()
 
         vector_clear(v);
 
-        char r = v->capacity == 2 && v->size == 0;
+        char r = v->capacity == DEFAULT_CAPACITY && v->size == 0;
 
         vector_destroy(v);
 

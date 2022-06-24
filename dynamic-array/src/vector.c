@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #include "../include/vector.h"
 
@@ -8,9 +7,7 @@ char _check_required_capacity(vector *vector, size_t size)
 {
     if (size >= vector->capacity)
     {
-        size_t extra_capacity = size >= 4 ? log2(size) : 1;
-        size_t new_capacity = size + extra_capacity;
-
+        size_t new_capacity = size + DEFAULT_CAPACITY - (size % DEFAULT_CAPACITY);
         void *tmp = realloc(vector->array, new_capacity * vector->element_size);
 
         if (tmp == NULL)
@@ -36,6 +33,7 @@ void _shift_elements(vector *vector, size_t index, size_t positions)
         char *array = vector->array;
         char *arr_index = array + (index * vector->element_size);
         char *arr_end = array + ((vector->size + positions - 1) * vector->element_size);
+
         while (arr_end > arr_index + (positions - 1) * vector->element_size)
         {
             memcpy(arr_end, arr_end - vector->element_size * positions, vector->element_size);
@@ -50,7 +48,7 @@ vector *vector_create(size_t element_size)
 
     if (new_vector != NULL)
     {
-        new_vector->capacity = 2;
+        new_vector->capacity = DEFAULT_CAPACITY;
         new_vector->element_size = element_size;
         new_vector->size = 0;
         new_vector->array = calloc(new_vector->capacity, new_vector->element_size);
@@ -186,11 +184,12 @@ void vector_remove_at(vector *, size_t);
 void vector_clear(vector *vector)
 {
     void *tmp = realloc(vector->array, 2 * vector->element_size);
-    if (tmp != NULL)
+
+    if (tmp == NULL)
+        return;
+    else
     {
-        vector->capacity = 2;
+        vector->capacity = DEFAULT_CAPACITY;
         vector->size = 0;
     }
-    else
-        return;
 }
