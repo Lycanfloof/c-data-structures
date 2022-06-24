@@ -196,9 +196,32 @@ void vector_add_vector_at(vector *destination, size_t index, vector *source)
 }
 /*
 void vector_sort(vector *, char (*)(void *, void *));
-
-void vector_remove(vector *, void *);
 */
+void vector_remove(vector *vector, void *element)
+{
+    char *array = vector->array;
+
+    for (size_t i = 0; i < vector->size; i++)
+    {
+        char is_equal = 1;
+
+        for (size_t j = 0; j < vector->element_size; j++)
+        {
+            if ((array + i * vector->element_size + j) != (char *)element + j)
+            {
+                is_equal = 0;
+                break;
+            }
+        }
+
+        if (is_equal)
+        {
+            vector_remove_at(vector, i);
+            break;
+        }
+    }
+}
+
 void vector_remove_at(vector *vector, size_t index)
 {
     _left_shift(vector, index, 1);
