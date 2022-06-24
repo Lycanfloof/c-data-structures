@@ -176,3 +176,21 @@ void vector_add_vector_at(vector *destination, size_t index, vector *source)
         }
     }
 }
+/*
+void vector_sort(vector *, char (*)(void *, void *));
+
+void vector_remove(vector *, void *);
+
+void vector_remove_at(vector *, size_t);
+*/
+void vector_clear(vector *vector)
+{
+    void *tmp = realloc(vector->array, 2 * vector->element_size);
+    if (tmp != NULL)
+    {
+        vector->capacity = 2;
+        vector->size = 0;
+    }
+    else
+        return;
+}

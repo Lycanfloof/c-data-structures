@@ -132,29 +132,7 @@ void vector_remove(vector *, void *);
 void vector_remove_at(vector *, size_t);
 
 /*
- * Returns 1 if the given vector contains no elements, otherwise it returns 0.
- *
- * Arguments:
- *  vector -> The given vector.
- *
- * Returns:
- *  1 if the given vector contains no elements, otherwise it returns 0.
- */
-char vector_is_empty(vector *);
-
-/*
- * Returns the number of elements stored in the given vector.
- *
- * Arguments:
- *  vector -> The given vector.
- *
- * Returns:
- *  The number of elements stored in the vector.
- */
-size_t vector_size(vector *);
-
-/*
- * Removes all the stored elements in the given vector.
+ * Removes all the stored elements in the given vector and sets its capacity at 2.
  *
  * Arguments:
  *  vector -> The given vector.

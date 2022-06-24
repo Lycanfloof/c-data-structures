@@ -278,16 +278,32 @@ char remove_at_test()
 {
 }
 
-char is_empty_test()
-{
-}
-
-char size_test()
-{
-}
-
 char clear_test()
 {
+    vector *v = vector_create(sizeof(long long));
+    if (v != NULL)
+    {
+        long long longl1 = 621;
+        long long longl2 = 926;
+
+        vector_add(v, &longl1, sizeof(longl1));
+        vector_add(v, &longl2, sizeof(longl2));
+        vector_add(v, &longl1, sizeof(longl1));
+        vector_add(v, &longl2, sizeof(longl2));
+
+        vector_clear(v);
+
+        char r = v->capacity == 2 && v->size == 0;
+
+        vector_destroy(v);
+
+        return r;
+    }
+    else
+    {
+        printf("Memory allocation couldn't be done.");
+        return 0;
+    }
 }
 
 char *assert(char value)
@@ -305,6 +321,7 @@ int main(void)
     char *s6 = assert(add_at_test());
     char *s7 = assert(add_vector_test());
     char *s8 = assert(add_vector_at_test());
+    char *s9 = assert(clear_test());
 
-    printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", s1, s2, s3, s4, s5, s6, s7, s8);
+    printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s", s1, s2, s3, s4, s5, s6, s7, s8, s9);
 }
