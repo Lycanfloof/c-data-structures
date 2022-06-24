@@ -24,19 +24,37 @@ char _check_required_capacity(vector *vector, size_t size)
     return 1;
 }
 
-void _shift_elements(vector *vector, size_t index, size_t positions)
+void _left_shift(vector *vector, size_t index, size_t positions)
 {
     if (index >= vector->size)
         return;
     else
     {
         char *array = vector->array;
-        char *arr_index = array + (index * vector->element_size);
-        char *arr_end = array + ((vector->size + positions - 1) * vector->element_size);
+        char *arr_index = array + index * vector->element_size;
+        char *arr_end = array + (vector->size - 1) * vector->element_size;
+
+        while (arr_index < arr_end - (positions - 1) * vector->element_size)
+        {
+            memcpy(arr_index, arr_index + positions * vector->element_size, vector->element_size);
+            arr_index += vector->element_size;
+        }
+    }
+}
+
+void _right_shift(vector *vector, size_t index, size_t positions)
+{
+    if (index >= vector->size)
+        return;
+    else
+    {
+        char *array = vector->array;
+        char *arr_index = array + index * vector->element_size;
+        char *arr_end = array + (vector->size + positions - 1) * vector->element_size;
 
         while (arr_end > arr_index + (positions - 1) * vector->element_size)
         {
-            memcpy(arr_end, arr_end - vector->element_size * positions, vector->element_size);
+            memcpy(arr_end, arr_end - positions * vector->element_size, vector->element_size);
             arr_end -= vector->element_size;
         }
     }
@@ -124,7 +142,7 @@ void vector_add_at(vector *vector, size_t index, void *element, size_t element_s
             return;
         else
         {
-            _shift_elements(vector, index, 1);
+            _right_shift(vector, index, 1);
 
             memcpy(((char *)vector->array) + index * vector->element_size,
                    element,
@@ -166,7 +184,8 @@ void vector_add_vector_at(vector *destination, size_t index, vector *source)
             return;
         else
         {
-            _shift_elements(destination, index, source->size);
+            _right_shift(destination, index, source->size);
+
             memcpy(((char *)destination->array) + index * destination->element_size,
                    source->array,
                    source->element_size * source->size);
