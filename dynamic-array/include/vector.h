@@ -18,7 +18,7 @@ typedef struct vector
  * Creates a new vector with an initial capacity of 8.
 
  * Arguments:
- *  element_size -> The size in bytes of the elements to be stored in the array.
+ *  element_size -> The size of the elements to be stored in the array.
  *
  * Returns:
  *  The pointer containing the address of the vector in memory.
@@ -27,10 +27,10 @@ vector *vector_create(size_t);
 
 /*
  * Deletes the given vector and frees its memory.
- * You need to pass a vector which has been created, otherwise you'll get undefined behaviour.
+ * You need to pass the pointer of an initialized vector, otherwise you'll get undefined behaviour.
  *
  * Arguments:
- *  vector -> The vector to be deleted.
+ *  vector -> The pointer of the vector to be deleted.
  *
  * Returns:
  *  A null pointer (so you can assign it to the vector pointer).
@@ -41,7 +41,7 @@ vector *vector_destroy(vector *);
  * Returns the pointer of an element at the given position in the array.
  *
  * Arguments:
- *  vector -> The vector containing the elements.
+ *  vector -> The pointer of the vector containing the elements.
  *  index -> The given position in the array.
  *
  * Returns:
@@ -50,70 +50,70 @@ vector *vector_destroy(vector *);
 void *vector_get(vector *, size_t);
 
 /*
- * Replaces the element at the specified position with the given one.
- * The given element has to be the same size as the vector's element size.
+ * Replaces the element at the specified position with the value stored in the given pointer.
+ * The pointer's element must be the same size as the vector's element size.
  *
  * Arguments:
- *  vector -> The vector containing the element to be replaced.
+ *  vector -> The pointer of the vector containing the element to be replaced.
  *  index -> The position of the element to be replaced.
- *  element -> The element that'll replace the other one.
+ *  element -> The pointer of the element that'll replace the other one.
  *  element_size -> The size of the element to be added.
  */
 void vector_set(vector *, size_t, void *, size_t);
 
 /*
  * Appends the given element to the end of the array, modifying its capacity if necessary.
- * The given element has to be the same size as the vector's element size.
+ * The pointer's element must be the same size as the vector's element size.
  * The capacity is increased by a factor of 8 when it is needed.
  *
  * Arguments:
  *  vector -> The vector in which the element is to be added.
- *  element -> The element to be added.
+ *  element -> The pointer of the element to be added.
  *  element_size -> The size of the element to be added.
  */
 void vector_add(vector *, void *, size_t);
 
 /*
  * Appends the given element to the specified position in the array, modifying its capacity if necessary.
- * The given element has to be the same size as the vector's element size.
+ * The pointer's element must be the same size as the vector's element size.
  * The capacity is increased by a factor of 8 when it is needed.
  *
  * Arguments:
  *  vector -> The vector in which the element is to be added.
  *  index -> The position in which the element is to be added.
- *  element -> The element to be added.
+ *  element -> The pointer of the element to be added.
  *  element_size -> The size of the element to be added.
  */
 void vector_add_at(vector *, size_t, void *, size_t);
 
 /*
  * Appends the elements of the given vector to the end of the array, modifying its capacity if necessary.
- * The given vector has to have the same element size as the other one.
+ * The given vector must have the same element size as the other one.
  * The capacity is increased by a factor of 8 when it is needed.
  *
  * Arguments:
- *  destination -> The vector that'll receive the elements.
- *  source -> The vector with the elements to be added.
+ *  destination -> The pointer of the vector that'll receive the elements.
+ *  source -> The pointer of the vector with the elements to be added.
  */
 void vector_add_vector(vector *, vector *);
 
 /*
  * Appends the elements of the given vector to the specified position in the array, modifying its capacity if necessary.
- * The given vector has to have the same element size as the other one.
+ * The given vector must have the same element size as the other one.
  * The capacity is increased by a factor of 8 when it is needed.
  *
  * Arguments:
- *  destination -> The vector that'll receive the elements.
+ *  destination -> The pointer of the vector that'll receive the elements.
  *  index -> The position in which the elements are to be added.
- *  source -> The vector with the elements to be added.
+ *  source -> The pointer of the vector with the elements to be added.
  */
 void vector_add_vector_at(vector *, size_t, vector *);
 
 /*
- * Sorts the given vector using Merge Sort and a comparator.
+ * Sorts the given vector using Merge Sort and a comparator function.
  *
  * Arguments:
- *  vector -> The vector to be sorted.
+ *  vector -> The pointer of the vector to be sorted.
  *  comp -> The operation used to make comparations between elements.
  */
 void vector_sort(vector *, char (*)(void *, void *));
@@ -123,8 +123,8 @@ void vector_sort(vector *, char (*)(void *, void *));
  * The given element has to be the same size as the vector's element size.
  *
  * Arguments:
- *  vector -> The vector in which the element is to be removed.
- *  element -> The element to be removed.
+ *  vector -> The pointer of the vector in which the element is to be removed.
+ *  element -> The pointer of the element to be removed.
  */
 void vector_remove(vector *, void *);
 
@@ -132,7 +132,7 @@ void vector_remove(vector *, void *);
  * Removes an element at the specified position in the array.
  *
  * Arguments:
- *  vector -> The vector in which the element is to be removed.
+ *  vector -> The pointer of the vector in which the element is to be removed.
  *  index -> The position of the element to be removed.
  */
 void vector_remove_at(vector *, size_t);
@@ -141,7 +141,7 @@ void vector_remove_at(vector *, size_t);
  * Removes all the stored elements in the given vector and sets its capacity to 8.
  *
  * Arguments:
- *  vector -> The given vector.
+ *  vector -> The pointer of the given vector.
  */
 void vector_clear(vector *);
 
