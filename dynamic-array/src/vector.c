@@ -37,7 +37,9 @@ void _left_shift(vector *vector, size_t index, size_t positions)
 
         while (arr_index < arr_end - (positions - 1) * vector->element_size)
         {
-            memcpy(arr_index, arr_index + positions * vector->element_size, vector->element_size);
+            memcpy(arr_index,
+                   arr_index + positions * vector->element_size,
+                   vector->element_size);
             arr_index += vector->element_size;
         }
     }
@@ -55,7 +57,9 @@ void _right_shift(vector *vector, size_t index, size_t positions)
 
         while (arr_end > arr_index + (positions - 1) * vector->element_size)
         {
-            memcpy(arr_end, arr_end - positions * vector->element_size, vector->element_size);
+            memcpy(arr_end,
+                   arr_end - positions * vector->element_size,
+                   vector->element_size);
             arr_end -= vector->element_size;
         }
     }
@@ -63,14 +67,14 @@ void _right_shift(vector *vector, size_t index, size_t positions)
 
 vector *vector_create(size_t element_size)
 {
-    vector *new_vector = calloc(1, sizeof(vector));
+    vector *new_vector = malloc(sizeof(vector));
 
     if (new_vector != NULL)
     {
         new_vector->capacity = DEFAULT_CAPACITY;
         new_vector->element_size = element_size;
         new_vector->size = 0;
-        new_vector->array = calloc(new_vector->capacity, new_vector->element_size);
+        new_vector->array = malloc(new_vector->capacity * new_vector->element_size);
 
         if (new_vector->array == NULL)
         {
