@@ -312,7 +312,7 @@ char sort_test() // Implemented.
 
         for (size_t i = 0; i < sz; i++)
         {
-            if (*((int *)v + i) != *(b + i))
+            if (*((int *)v->array + i) != *(b + i))
             {
                 r1 = 0;
                 break;
@@ -323,7 +323,7 @@ char sort_test() // Implemented.
 
         for (size_t i = 0; i < sz; i++)
         {
-            if (*((int *)e + i) != *(c + i))
+            if (*((int *)e->array + i) != *(c + i))
             {
                 r2 = 0;
                 break;

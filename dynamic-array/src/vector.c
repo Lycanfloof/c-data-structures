@@ -207,23 +207,23 @@ char merge(size_t l, size_t m, size_t r, vector *vector, char (*comp)(void *, vo
 
     if (larr != NULL && rarr != NULL)
     {
-        memcpy(larr, arr + l, larr_size * vector->element_size);
-        memcpy(rarr, arr + m + 1, rarr_size * vector->element_size);
+        memcpy(larr, arr + l * vector->element_size, larr_size * vector->element_size);
+        memcpy(rarr, arr + (m + 1) * vector->element_size, rarr_size * vector->element_size);
 
         size_t inx = l;
         size_t linx = 0;
         size_t rinx = 0;
         while (linx < larr_size || rinx < rarr_size)
         {
-            if (rinx >= rarr_size || (linx < larr_size && comp(larr + linx, rarr + rinx) <= 0))
+            if (rinx >= rarr_size || (linx < larr_size && comp(larr + linx * vector->element_size, rarr + rinx * vector->element_size) <= 0))
             {
-                memcpy(arr + inx, larr + linx, vector->element_size);
+                memcpy(arr + inx * vector->element_size, larr + linx * vector->element_size, vector->element_size);
                 inx++;
                 linx++;
             }
             else
             {
-                memcpy(arr + inx, rarr + rinx, vector->element_size);
+                memcpy(arr + inx * vector->element_size, rarr + rinx * vector->element_size, vector->element_size);
                 inx++;
                 rinx++;
             }
