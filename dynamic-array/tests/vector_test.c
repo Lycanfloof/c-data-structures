@@ -266,11 +266,83 @@ char set_test() // Implemented.
     }
 }
 
-char sort_test()
+char compare_int_asc(void *int_a, void *int_b)
 {
+    if (*((int *)int_a) < *((int *)int_b))
+        return -1;
+    else if (*((int *)int_a) > *((int *)int_b))
+        return 1;
+    else
+        return 0;
 }
 
-char remove_test()
+char compare_int_desc(void *int_a, void *int_b)
+{
+    if (*((int *)int_a) > *((int *)int_b))
+        return -1;
+    else if (*((int *)int_a) < *((int *)int_b))
+        return 1;
+    else
+        return 0;
+}
+
+char sort_test() // Implemented.
+{
+    vector *v = vector_create(sizeof(int));
+    vector *e = vector_create(sizeof(int));
+
+    if (v != NULL && e != NULL)
+    {
+        int a[] = {1793, 2073, 7079, 1965, 4141, 3559, 4126, 271, 5170, 5379, 3271, 248};
+        size_t sz = sizeof(a) / sizeof(*a);
+
+        for (size_t i = 0; i < sz; i++)
+        {
+            vector_add(v, &a[i], sizeof(*a));
+            vector_add(e, &a[i], sizeof(*a));
+        }
+
+        int b[] = {248, 271, 1793, 1965, 2073, 3271, 3559, 4126, 4141, 5170, 5379, 7079};
+        int c[] = {7079, 5379, 5170, 4141, 4126, 3559, 3271, 2073, 1965, 1793, 271, 248};
+
+        vector_sort(v, compare_int_asc);
+        vector_sort(e, compare_int_desc);
+
+        char r1 = 1;
+
+        for (size_t i = 0; i < sz; i++)
+        {
+            if (*((int *)v + i) != *(b + i))
+            {
+                r1 = 0;
+                break;
+            }
+        }
+
+        char r2 = 1;
+
+        for (size_t i = 0; i < sz; i++)
+        {
+            if (*((int *)e + i) != *(c + i))
+            {
+                r2 = 0;
+                break;
+            }
+        }
+
+        v = vector_destroy(v);
+        e = vector_destroy(e);
+
+        return r1 && r2;
+    }
+    else
+    {
+        printf("Memory allocation couldn't be done.");
+        return 0;
+    }
+}
+
+char remove_test() // Implemented.
 {
     vector *v = vector_create(sizeof(long long));
 
@@ -299,7 +371,7 @@ char remove_test()
     }
 }
 
-char remove_at_test()
+char remove_at_test() // Implemented.
 {
     vector *v = vector_create(sizeof(long long));
 
@@ -328,7 +400,7 @@ char remove_at_test()
     }
 }
 
-char clear_test()
+char clear_test() // Implemented.
 {
     vector *v = vector_create(sizeof(long long));
     if (v != NULL)
@@ -356,7 +428,7 @@ char clear_test()
     }
 }
 
-char *assert(char value)
+char *assert(char value) // Implemented.
 {
     return value != 0 ? "passed" : "failed";
 }
@@ -374,6 +446,7 @@ int main(void)
     char *s9 = assert(clear_test());
     char *s10 = assert(remove_test());
     char *s11 = assert(remove_at_test());
+    char *s12 = assert(sort_test());
 
-    printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s", s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11);
+    printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s", s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12);
 }

@@ -110,7 +110,7 @@ void vector_add_vector(vector *, vector *);
 void vector_add_vector_at(vector *, size_t, vector *);
 
 /*
- * Sorts the given vector using Quick Sort and a comparator.
+ * Sorts the given vector using Merge Sort and a comparator.
  *
  * Arguments:
  *  vector -> The vector to be sorted.

@@ -194,9 +194,74 @@ void vector_add_vector_at(vector *destination, size_t index, vector *source)
         }
     }
 }
-/*
-void vector_sort(vector *, char (*)(void *, void *));
-*/
+
+char merge(size_t l, size_t m, size_t r, vector *vector, char (*comp)(void *, void *))
+{
+    char sorted = 0;
+    size_t larr_size = (m - l + 1);
+    size_t rarr_size = (r - m);
+
+    char *arr = (char *)vector->array;
+    char *larr = malloc(larr_size * vector->element_size);
+    char *rarr = malloc(rarr_size * vector->element_size);
+
+    if (larr != NULL && rarr != NULL)
+    {
+        memcpy(larr, arr + l, larr_size * vector->element_size);
+        memcpy(rarr, arr + m + 1, rarr_size * vector->element_size);
+
+        size_t inx = l;
+        size_t linx = 0;
+        size_t rinx = 0;
+        while (linx < larr_size || rinx < rarr_size)
+        {
+            if (rinx >= rarr_size || (linx < larr_size && comp(larr + linx, rarr + rinx) <= 0))
+            {
+                memcpy(arr + inx, larr + linx, vector->element_size);
+                inx++;
+                linx++;
+            }
+            else
+            {
+                memcpy(arr + inx, rarr + rinx, vector->element_size);
+                inx++;
+                rinx++;
+            }
+        }
+        sorted = 1;
+    }
+
+    if (larr != NULL)
+        free(larr);
+    if (rarr != NULL)
+        free(rarr);
+
+    return sorted;
+}
+
+char merge_sort(size_t l, size_t r, vector *vector, char (*comp)(void *, void *))
+{
+    if (l < r)
+    {
+        size_t m = (l + r) / 2;
+
+        char res_fst_half = merge_sort(l, m, vector, comp);
+        char res_scnd_half = merge_sort(m + 1, r, vector, comp);
+        char res_merge = merge(l, m, r, vector, comp);
+
+        return res_fst_half && res_scnd_half && res_merge;
+    }
+    else
+    {
+        return 1;
+    }
+}
+
+void vector_sort(vector *vector, char (*comp)(void *, void *))
+{
+    merge_sort(0, vector->size - 1, vector, comp);
+}
+
 void vector_remove(vector *vector, void *element)
 {
     char *array = vector->array;
